@@ -1,0 +1,310 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Export_model extends CI_Model 
+{ 
+ 
+	 public function __construct()
+     {
+             parent::__construct();
+             // Your own constructor code
+             $this->load->helper('curl_helper'); 
+     }
+
+    
+ public function getDateRecord($startdate,$enddate) {	
+             
+             $this->legacy_db = $this->load->database('second', true);
+
+    //   -----------------------------Dummy query------------------------------------------
+    //   select o.ID as ID,	o.post_title as Title, 	 om.meta_value as utmsrc FROM wp_posts o	
+    //  JOIN wp_postmeta om 			
+    //  ON o.ID = om.post_id 			
+    //  LEFT JOIN wp_postmeta AS pm2			
+    //  ON o.ID = pm2.post_id			
+    //  WHERE o.post_type = 'shop_order' 			
+    //  AND 			
+    //  om.meta_key = 'after_order_cookie_xlutm_params_utm' AND om.meta_value != '' 			
+    //  AND pm2.meta_key IN ( '_paid_date',	 '_paid_date',	 '_date_completed',	 '_completed_date' ) 
+    //  AND pm2.meta_value != ''  AND 	 o.post_date BETWEEN 			
+    //       CAST('2022-10-01' AS DATE) AND 			
+    //       CAST('2022-11-15' AS DATE) ORDER BY o.post_date DESC  
+    //   -----------------------------Dummy query------------------------------------------
+
+
+    //  $sql="select o.ID as ID,o.post_title as Title , om.meta_value as utmsrc FROM wp_posts o
+    //  JOIN wp_postmeta om 
+    //  ON o.ID = om.post_id 
+    //  LEFT JOIN wp_postmeta AS pm2
+    //  ON o.ID = pm2.post_id
+    //  WHERE o.post_type = 'shop_order' 
+    //  AND 
+    //  om.meta_key = 'after_order_cookie_xlutm_params_utm' AND om.meta_value != '' 
+    //  AND pm2.meta_key IN ( '_paid_date', '_paid_date', '_date_completed', '_completed_date' )
+    //  AND pm2.meta_value != '' 
+    //  AND 
+    //  o.post_date BETWEEN 
+    //       CAST('$startdate' AS DATE) AND 
+    //       CAST('$enddate' AS DATE) ORDER BY o.post_date DESC ";
+
+
+    //All order except cancelled or failed
+      
+$sql = "  select o.ID as ID, om.meta_value as utmsrc, pm2.meta_value as Email, pm5.meta_value as billing_city , pm6.meta_value as order_total, pm7.meta_value as billing_postcode, pm8.meta_value as billing_phone, pm10.meta_value as payment_method_title, pm13.meta_value as billing_state, pm14.meta_value as odate FROM wp_posts o JOIN wp_postmeta om ON o.ID = om.post_id LEFT JOIN wp_postmeta AS pm2 ON o.ID = pm2.post_id LEFT JOIN wp_postmeta AS pm5 ON o.ID = pm5.post_id LEFT JOIN wp_postmeta AS pm6 ON o.ID = pm6.post_id LEFT JOIN wp_postmeta AS pm7 ON o.ID = pm7.post_id LEFT JOIN wp_postmeta AS pm8 ON o.ID = pm8.post_id LEFT JOIN wp_postmeta AS pm10 ON o.ID = pm10.post_id LEFT JOIN wp_postmeta AS pm12 ON o.ID = pm12.post_id LEFT JOIN wp_postmeta AS pm13 ON o.ID = pm13.post_id LEFT JOIN wp_postmeta AS pm14 ON o.ID = pm14.post_id WHERE o.post_type = 'shop_order' AND o.post_status NOT IN ('wc-cancelled', 'wc-failed') AND om.meta_key = 'after_order_cookie_xlutm_params_utm' AND om.meta_value != '' AND pm2.meta_key = '_billing_email' AND pm5.meta_value != '' AND pm5.meta_key = '_billing_city' AND pm5.meta_value != '' AND pm6.meta_key = '_order_total' AND pm6.meta_value != '' AND pm7.meta_key = '_billing_postcode' AND pm7.meta_value != '' AND pm8.meta_key = '_billing_phone' AND pm8.meta_value != '' AND pm10.meta_key = '_payment_method_title' AND pm10.meta_value != '' AND pm12.meta_key = '_billing_address_2' AND pm12.meta_value != '' AND pm13.meta_key = '_billing_state' AND pm13.meta_value != '' AND pm14.meta_key = '_paid_date' AND pm14.meta_value != ''  
+    AND 
+    o.post_date BETWEEN 
+         CAST('$startdate' AS DATE) AND 
+         CAST('$enddate' AS DATE) ORDER BY o.post_date DESC 
+         
+         "; 
+
+        //    echo '<pre>';
+        //    echo ($sql);
+        //   echo '</pre>';
+        //    exit;
+
+             
+             $query = $this->legacy_db->query($sql);
+
+             $this->legacy_db->close();  
+
+             if ($query->num_rows() > 0) {
+
+                $result = $query->result_array();
+
+             }else{
+
+                $result = array(); 
+
+             }
+
+        
+
+             
+
+            //  echo '<pre>';
+            //  print_r($result);
+            //  exit;
+
+
+            
+             foreach ($result as $src ) {
+
+
+//   o.ID as ID,			
+//   utmsrc,			
+//  Email,			
+  			
+//  billing_city ,			
+//   order_total,			
+//  billing_postcode,		
+//  billing_phone,			
+    			
+//  payment_method_title,		
+  			
+//  _billing_state
+
+               
+                $data[] =    array(
+                'id' => $src['ID'],
+                'Email' => $src['Email'],
+                'billing_city' =>  $src['billing_city'],
+                'order_total' =>  $src['order_total'],  
+                'billing_postcode' =>  $src['billing_postcode'], 
+                'billing_phone' =>  $src['billing_phone'], 
+                'payment_method_title' =>  $src['payment_method_title'],  
+                'billing_address_1' =>  $src['billing_address_1'], 
+                'billing_address_2' =>  $src['billing_address_2'], 
+                'billing_state' =>  $src['billing_state'], 
+                'billing_email' =>  $src['Email'], 
+                'order_date' => $src['odate'],
+                'utm' => $src['utmsrc']
+                );
+
+               
+             } 
+
+ 
+
+           $refdata = $this->refinedata($data);
+  
+
+ 
+
+             return $refdata;// $query->result_array();
+ }
+
+
+ public function refinedata($results) { 
+
+if($results)
+{
+$rw_count = 1;
+$orderdate='';
+$ordertime='';
+$total_product_per_order='';
+ 
+    foreach($results as $data)
+    {
+     
+        $datetime = new DateTime($data['order_date']);
+
+        $orderdate = $datetime->format('Y-m-d');
+        $ordertime = $datetime->format('H:i:s');
+ 
+
+        $product_utm = unserialize($data['utm']);
+
+        if($product_utm)
+        {
+
+        
+
+            foreach($product_utm as $key_i=>$val_i)
+            {
+        
+                $arysrc =  
+                    
+                    array(
+                        'order_id' => $data['id'], 
+                        'utm_source_id' =>  $key_i,
+
+                        'utm_source' => $product_utm[$key_i]['utm_source'], 
+                        'utm_medium' => $product_utm[$key_i]['utm_medium'],
+                        'utm_campaign' => $product_utm[$key_i]['utm_campaign'],
+                        'utm_content' =>  $product_utm[$key_i]['utm_content'],          
+                    
+                        );
+
+                    $data_camp_src[$data['id']]  =  $arysrc ;     
+            }
+        
+            
+
+        }
+ 
+        
+ 
+        $showcoupondata = '0';
+        
+        $showpercent='';
+        $codfee = '';
+        $dt_src_data = '';
+
+            
+
+            if($data_camp_src)
+            {
+
+
+            $dt = $data_camp_src[$data['id']];
+
+                $dt_src_data = array(
+                    'utm_source_id' => $dt['utm_source_id'],
+                    'utm_source' =>$dt['utm_source'],
+                    'utm_medium' => $dt['utm_medium'],
+                    'utm_campaign'=>$dt['utm_campaign']
+ 
+                );
+
+            
+
+            }
+        
+            $itemscount = 0;
+            //Fetch order data from Woo Rest API
+            $odata = get_orderdata_by_id($data['id']);
+            $itemscount = count($odata->order->line_items);
+            $order_status = $odata->order->status;
+  
+
+            $refdata[] = array(
+
+
+           
+                    
+                'No'=>$rw_count,
+                'Order_No'=>$data['id'],  
+                'Orderdate'=>$orderdate,  
+                'Order_time'=>$ordertime,  
+
+                'City'=>$data['billing_city']  ,
+                'State_Name'=>$data['billing_state']  ,
+                'Postcode'=>$data['billing_postcode'],
+                'Email'=>$data['Email'],
+                'Phone'=>$data['billing_phone']  , 
+                'Payment_Method_Title'=>$data['payment_method_title'],
+                 
+                'Order_Total_Amount'=>$data['order_total'],
+                'Order_status' => $order_status,
+
+                'Source_Id'=>$dt_src_data['utm_source_id'],
+                'Source'=>$dt_src_data['utm_source'],
+                'Medium'=>$dt_src_data['utm_medium'],
+                'Campaign'=>$dt_src_data['utm_campaign'],
+
+                'itemcount' => $itemscount
+
+               
+ 
+            );
+
+            
+    
+    $rw_count++;
+    }//Foreach end
+
+}else{        //-----End result
+
+
+    
+    $refdata[] = array(
+            
+            'No'=>'0',
+            'Order_No'=>'0',  
+            'Orderdate'=>'0',  
+            'Order_time'=>'0', 
+            'Salutation'=>'0',
+            'First_Name'=>'0', 
+            'Last_Name'=>'0' ,
+            'Address_1'=>'0' , 
+            'Address_2'=>'0'  ,
+            'City'=>'0' ,
+            'State_Name'=>'0'  ,
+            'Postcode'=>'0',
+            'Email'=>'0',
+            'Phone'=>'0'   ,
+            'Payment_Method'=>'0',
+            'Payment_Method_Title'=>'0',
+            'Category'=>'0',
+            'Coupon_Code' =>'0',
+            'Cart_Discount_Amount'=>'0',
+            'COD_fee'=>'0',
+            'Order_Total_Amount'=>'0',
+            'Source_Id'=>'0',
+            'Source'=>'0',
+            'Medium'=>'0',
+            'Campaign'=>'0',
+            'Products_Category'=>'0',
+            'Products_sku'=>'0',
+            'Products_Title'=>'0',
+            'itemcount' => '-'
+    );
+
+}
+
+
+// echo '<pre>';
+// print_r($refdata);
+// exit;
+
+return $refdata;
+
+
+ }
+ 
+
+}
+ 
+
+ 

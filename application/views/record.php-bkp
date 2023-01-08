@@ -1,0 +1,421 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
+  
+
+<!-- Breadcrumbs -->
+<ol class="breadcrumb D-breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+    <li class="breadcrumb-item active">My Dashboard</li>
+</ol>
+</div>
+
+
+<div class="container-fluid   table-container">
+ <form action="<?php echo  base_url('/export/formdata'); ?>" class="form-inline " method="post">
+   
+ 
+<div id="foo">
+  <input type="text" name="startdate" id="start">
+  <span>to</span>
+  <input type="text" name="enddate" id="end">
+</div>
+
+
+  </div>
+  <div class="col-md-2"><div> </div>
+   <input type="submit" name="export" value="Export_to_CSV" class="btn btn-info" />
+  </div>
+ </form>
+</div>
+
+<div class="container-fluid table-container">
+<div class="container m-0">
+<div class="row">
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fa fa-table"></i> Order Data
+    </div>
+    <div class="card-block">
+        <div class="table-responsive">
+ <table class="table table-bordered" width="100%" id="dataTable" cellspacing="0">
+                <thead>
+                    <tr>
+                    <th>#</th>
+ <td>Order No.</td> 
+<td>Orderdate</td>
+<td>Order time</td>
+
+<th>Salutation</th>
+<th>First Name (Billing)</th>   
+<th>Last Name (Billing)</th>  
+
+<th>Address 1</th>  
+<th>Address 2</th>  
+<th>City (Billing)</th>  
+<th>State Name (Billing)</th>  
+<th>Postcode (Billing)</th>
+
+<th>Email (Billing) </th> 
+<th>Phone (Billing)</th>   
+<th>Payment Method </th>
+<th>Payment Method Title</th>
+
+
+
+<th>Category </th>
+<th>Coupon Code </th>
+<th>Cart Discount Amount</th>
+
+<th>COD fee</th>
+<th>Order Total Amount</th>
+
+
+
+<th>Source Id</th>
+<th>Source</th>
+<th>Medium</th>
+<th>Campaign</th>
+<th>Products Data</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                    <th>#</th>
+  <td>Order No.</td> 
+<td>Orderdate</td>
+<td>Order time</td>
+
+<th>Salutation</th>
+<th>First Name (Billing)</th>   
+<th>Last Name (Billing)</th> 
+
+<th>Address 1</th>  
+<th>Address 2</th>  
+<th>City (Billing)</th>  
+<th>State Name (Billing)</th>  
+<th>Postcode (Billing)</th>
+
+<th>Email (Billing) </th> 
+<th>Phone (Billing)</th>   
+<th>Payment Method </th>
+<th>Payment Method Title</th>
+
+
+
+<th>Category </th>
+<th>Coupon Code </th>
+<th>Cart Discount Amount</th>
+
+<th>COD fee</th>
+<th>Order Total Amount</th>
+
+
+
+
+<th>Source Id</th>
+<th>Source</th>
+<th>Medium</th>
+<th>Campaign</th>
+<th>Products Data</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+
+
+     
+
+<?php
+
+// echo '<pre>';
+// print_r($results);
+// echo '</pre>';
+// exit;
+
+ 
+/* [id] => 242650
+   [order_info] => Array
+    (
+        [order_date_created] => WC_DateTime Object
+            (
+                [utc_offset:protected] => 0
+                [date] => 2022-09-13 23:26:27.000000
+                [timezone_type] => 3
+                [timezone] => Asia/Kolkata
+            )
+
+        [order_payment_method] => ccavenue
+        [order_payment_method_title] => CCAvenue
+        [order_total] => 1085
+        [order_billing_first_name] => Garima
+        [order_billing_last_name] => Kataria
+        [order_billing_company] => 
+        [order_billing_address_1] => D13 flat 501
+        [order_billing_address_2] => Ireo victory valley
+        [order_billing_city] => Gurugram
+        [order_billing_state] => HR
+        [order_billing_postcode] => 122102
+        [order_billing_country] => IN
+        [order_billing_email] => garima.mahalwaria@yahoo.com
+        [order_billing_phone] => 09910826146
+        [order_gender] => Ms
+        [order_location] => ,,
+        [order_applied_coupon_code] => 
+        [order_applied_coupon_amount] => 
+        [order_applied_coupon_type] => 
+        [order_categories] => Mugs, Home Decor
+        [order_product_items]
+        [order_product_items_count]
+        
+    )
+
+[utm] => a:1:{i:1663091322;a:4:{s:10:"utm_source";s:8:"Facebook";s:10:"utm_medium";s:49:"All_Landing_Page_Retargeting_September22 – Copy";s:12:"utm_campaign";s:12:"Landing Page";s:11:"utm_content";s:6:"Stoles";}}
+)  
+
+
+$data['order_info']['order_date_created']['date']
+
+$data['order_info'][order_payment_method] => ccavenue
+$data['order_info'][order_payment_method_title] => CCAvenue
+$data['order_info'][order_total] => 1085
+$data['order_info'][order_billing_first_name] => Garima
+$data['order_info'][order_billing_last_name] => Kataria
+$data['order_info'][order_billing_company] => 
+$data['order_info'][order_billing_address_1] => D13 flat 501
+$data['order_info'][order_billing_address_2] => Ireo victory valley
+$data['order_info'][order_billing_city] => Gurugram
+$data['order_info'][order_billing_state] => HR
+$data['order_info'][order_billing_postcode] => 122102
+$data['order_info'][order_billing_country] => IN
+$data['order_info'][order_billing_email] => garima.mahalwaria@yahoo.com
+$data['order_info'][order_billing_phone] => 09910826146
+$data['order_info'][order_gender] => Ms
+$data['order_info'][order_location] => ,,
+$data['order_info'][order_applied_coupon_code] => 
+$data['order_info'][order_applied_coupon_amount] => 
+$data['order_info'][order_applied_coupon_type] => 
+$data['order_info'][order_categories] => Mugs, Home Decor
+
+*/  
+
+
+
+ 
+$numer = end($this->uri->segment_array()); 
+$cnt = 1;
+if($numer>0)
+$cnt = 1 + $numer;
+// $rowperpage = $data['rowperpage'];
+// $rowno = $data['rowno'];
+
+$orderdate='';
+$ordertime='';
+$total_product_per_order='';
+foreach($results as $data) {
+ 
+
+
+
+$datetime = new DateTime($data['order_info']['order_date_created']);
+
+$orderdate = $datetime->format('Y-m-d');
+$ordertime = $datetime->format('H:i:s');
+
+$total_product_per_order = $data['order_info']['order_product_items_count'];
+
+
+$product_utm = unserialize($data['utm']);
+
+if($product_utm)
+{
+
+
+/*
+[1663091322] => Array
+        (
+            [utm_source] => Facebook
+            [utm_medium] => All_Landing_Page_Retargeting_September22 – Copy
+            [utm_campaign] => Landing Page
+            [utm_content] => Stoles
+        )
+
+*/
+
+foreach($product_utm as $key_i=>$val_i)
+    {
+  
+           $arysrc =  
+            
+               array(
+                'order_id' => $data['id'], 
+                'utm_source_id' =>  $key_i,
+
+                'utm_source' => $product_utm[$key_i]['utm_source'], 
+                'utm_medium' => $product_utm[$key_i]['utm_medium'],
+                'utm_campaign' => $product_utm[$key_i]['utm_campaign'],
+                'utm_content' =>  $product_utm[$key_i]['utm_content'],          
+             
+                );
+
+             $data_camp_src[$data['id']]  =  $arysrc ;     
+     }
+  
+    // $data_camp_src = array_unique($data_camp_src);
+
+//$insider_key_i = array_unique($insider_key_i); 
+
+
+//    echo '<pre>';
+// // // print_r($data);
+//    print_r($data_camp_src);
+//     echo '</pre>';
+
+}
+
+//$product_data = '<button class="primary-button">Expand</button>';
+$product_data = '';
+$prdt_item_loop=0;
+
+
+
+ 
+
+for($prdt_item_loop; $prdt_item_loop<$total_product_per_order; $prdt_item_loop++)
+{
+ 
+    
+ $p_product_id =    $data['order_info']['order_product_items'][$prdt_item_loop]['product_id'];
+ $p_product_category =   $data['order_info']['order_product_items'][$prdt_item_loop]['product_category'];
+ $p_product_name =  $data['order_info']['order_product_items'][$prdt_item_loop]['product_name']; 
+ $p_product_sku =   $data['order_info']['order_product_items'][$prdt_item_loop]['product_sku'];  
+ $p_product_category =   $data['order_info']['order_product_items'][$prdt_item_loop]['product_category'];  
+
+ 
+
+
+    $product_data .='
+    <table class="hidden_table" >
+  
+    
+    <th>Name</th>
+    <th>SKU</th> 
+    <th>Category</th>
+     
+
+    <tr>
+     
+    <td>'.$p_product_category.'</td>
+    <td>'.$p_product_sku.'</td>
+    <td>'.$p_product_name.'</td>
+   
+   
+    
+    </tr>
+    </table>';
+
+}
+ 
+ 
+$order_payment_method_title = $data['order_info']['order_payment_method_title'];
+$order_applied_coupon_code = $data['order_info']['order_applied_coupon_code'];
+$order_applied_coupon_type =  $data['order_info']['order_applied_coupon_type']; 
+$order_applied_coupon_amount = $data['order_info']['order_applied_coupon_amount']; 
+$showcoupondata = '<td>0</td>';
+ 
+$showpercent='';
+
+if($order_applied_coupon_code)
+{
+  if($order_applied_coupon_type == 'percent')$showpercent = '%';
+  $showcoupondata = '<td>'.$order_applied_coupon_amount.'('.$showpercent.')'.'</td>';
+}
+
+$codfee = '';
+if($order_payment_method_title == 'Cash on delivery' ){ $codfee = '50';}
+
+$dt_src_data = '<td></td>
+<td></td>
+<td></td>
+<td></td>';
+
+
+if($data_camp_src)
+{
+
+
+$dt = $data_camp_src[$data['id']];
+$dt_src_data = '<td>'.$dt['utm_source_id'].'</td>
+<td>'.$dt['utm_source'].'</td>
+<td>'.$dt['utm_medium'].'</td>
+<td>'.$dt['utm_campaign'].'</td>';
+
+}
+ 
+// $dt['utm_source'] //=> Facebook
+// $dt['utm_medium'] //=> All_Landing_Page_Retargeting_September22 – Copy
+// $dt['utm_campaign'] //=> Landing Page
+// $dt['utm_content']// => Stoles
+// $dt['utm_source_id']
+ 
+
+echo '<tr>
+<td>'.$cnt.'</td>
+<td>'.$data['id'].'</td> 
+<td>'.$orderdate.'</td>
+<td>'.$ordertime.'</td>
+
+<td>'.$data['order_info']['order_gender'].'</td>
+<td>'.$data['order_info']['order_billing_first_name'].'</td>   
+<td>'.$data['order_info']['order_billing_last_name'].'</td>  
+
+<td>'.$data['order_info']['order_billing_address_1'].'</td>  
+<td>'.$data['order_info']['order_billing_address_2'].'</td>  
+<td>'.$data['order_info']['order_billing_city'].'</td>  
+<td>'.$data['order_info']['order_billing_state'].'</td>  
+<td>'.$data['order_info']['order_billing_postcode'].'</td>
+
+<td>'.$data['order_info']['order_billing_email'] .'</td> 
+<td>'.$data['order_info']['order_billing_phone'].'</td>   
+<td>'.$data['order_info']['order_payment_method'].' </td>
+<td>'.$data['order_info']['order_payment_method_title'].'</td>
+
+
+
+<td>'.$data['order_info']['order_categories'].' </td>
+
+ 
+
+
+<td>'.$data['order_info']['order_applied_coupon_code'].'</td>
+'.$showcoupondata.'
+
+<td>'.$codfee.'</td>
+<td>'.$data['order_info']['order_total'].'</td>
+
+'.$dt_src_data.'
+
+
+<td>'.$product_data.'</td>
+
+</tr> 
+'; 
+
+$cnt++;
+}
+?>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer small text-muted">
+    <p><?php echo $links; ?></p>
+    </div>
+</div>
+
+
+
+
+
+</div>

@@ -1,0 +1,2 @@
+2022-11-16  3:41:31 522007 [Warning] Aborted connection 522007 to db: 'feedback_db' user: 'wp_user' host: 'localhost' (Got an error reading communication packets)
+2022-11-16  3:41:31 522006 [Warning] Aborted connection 522006 to db: 'wp_db' user: 'wp_user' host: 'localhost' (Got an error reading communication packets)
